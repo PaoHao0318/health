@@ -1,26 +1,108 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增菜單</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ775fPVRc54jAzBjUsFf0I0zNJ+ErzQghI" crossorigin="anonymous">
+    <style>
+        /* 自定義樣式 */
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 50px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .form-control {
+            border: 2px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .btn-custom-primary {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn-custom-primary:hover {
+            background: linear-gradient(90deg, #0056b3, #007bff);
+        }
+        .btn-secondary {
+            border-radius: 25px;
+            padding: 10px 20px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container mx-auto">
+            <h1 class="form-header">新增菜單</h1>
+            
+            <!-- 新增菜單表單 -->
+            <form method="POST">
+                <div class="form-group">
+                    <label for="menu_name">菜單名稱</label>
+                    <input type="text" class="form-control" id="menu_name" name="menu_name" placeholder="請輸入菜單名稱" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ingredients">食材</label>
+                    <textarea class="form-control" id="ingredients" name="ingredients" rows="3" placeholder="請輸入所需食材" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nutrition_calories">總熱量 (大卡)</label>
+                    <input type="number" class="form-control" step="0.01" id="nutrition_calories" name="nutrition_calories" placeholder="請輸入總熱量" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nutrition_protein">蛋白質 (g)</label>
+                    <input type="number" class="form-control" step="0.01" id="nutrition_protein" name="nutrition_protein" placeholder="請輸入蛋白質含量" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nutrition_fat">脂肪 (g)</label>
+                    <input type="number" class="form-control" step="0.01" id="nutrition_fat" name="nutrition_fat" placeholder="請輸入脂肪含量" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nutrition_carbs">醣類 (g)</label>
+                    <input type="number" class="form-control" step="0.01" id="nutrition_carbs" name="nutrition_carbs" placeholder="請輸入醣類含量" required>
+                </div>
+                
+                <button type="submit" class="btn btn-custom-primary btn-block">新增菜單</button>
+            </form>
 
-{% block title %}新增商家{% endblock %}
-
-{% block body %}
-<div class="container mt-4">
-    <h1 class="mb-4 text-center">新增商家</h1>
-
-    <form method="POST" action="{{ url_for('add_canteen') }}">
-        <!-- 商家名稱欄位 -->
-        <div class="form-group">
-            <label for="name">商家名稱</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <!-- 返回店家頁面按鈕 -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-secondary">返回店家頁面</a>
+            </div>
         </div>
+    </div>
 
-        <!-- 商家介紹欄位 -->
-        <div class="form-group">
-            <label for="description">商家介紹</label>
-            <textarea class="form-control" id="description" name="description" rows="3" placeholder="簡短介紹商家的內容"></textarea>
-        </div>
-
-        <!-- 提交按鈕 -->
-        <button type="submit" class="btn btn-primary">新增商家</button>
-    </form>
-</div>
-{% endblock %}
+    <!-- 引入 jQuery 和 Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6Hty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4YfF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

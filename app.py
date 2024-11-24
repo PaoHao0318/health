@@ -58,13 +58,25 @@ def view_or_edit_canteen(canteen_id):
             nutrition_carbs=nutrition_carbs,
             canteen_id=canteen.id
         )
+        
+        # 添加新的菜單到資料庫
         db.session.add(new_menu)
         db.session.commit()
+        
+        # 診斷：確認菜單是否正確添加
+        print(f"菜單 {new_menu.name} 已成功新增！")
 
+        # 使用重定向刷新頁面，並從資料庫中重新獲取最新菜單資料
         return redirect(url_for('view_or_edit_canteen', canteen_id=canteen.id))
 
+    # 確保每次加載頁面時都從資料庫查詢最新的菜單資料
     menus = Menu.query.filter_by(canteen_id=canteen.id).all()
+
+    # 診斷：查看頁面加載的菜單數據
+    print(f"加載菜單：{menus}")
+
     return render_template('view_canteen.html', canteen=canteen, menus=menus)
+
 
 
 @app.route('/add_canteen', methods=['GET', 'POST'])
@@ -94,17 +106,25 @@ def add_canteen():
 
 
 # 編輯商家資料
-@app.route('/canteen/edit/<int:canteen_id>', methods=['GET', 'POST'])
+@app.route('/edit_canteen/<int:canteen_id>', methods=['GET', 'POST'])
 def edit_canteen(canteen_id):
+    # 獲取商家資料
     canteen = Canteen.query.get_or_404(canteen_id)
 
     if request.method == 'POST':
+        # 從表單中更新商家資訊
         canteen.name = request.form['name']
-        canteen.description = request.form['description']
+        canteen.description = request.form.get('description', '')  # 如果未填，則為空字符串
+        
+        # 提交更改
         db.session.commit()
-        return redirect(url_for('view_or_edit_canteen', canteen_id=canteen.id))  # 更新後返回商家詳細頁
-    
+
+        # 重定向回商家詳情頁面
+        return redirect(url_for('view_or_edit_canteen', canteen_id=canteen.id))
+
+    # 如果是 GET 請求，渲染編輯頁面
     return render_template('edit_canteen.html', canteen=canteen)
+
 
 
 # 新增菜單
@@ -139,26 +159,24 @@ def add_menu(canteen_id):
 
 @app.route('/edit_menu/<int:menu_id>', methods=['GET', 'POST'])
 def edit_menu(menu_id):
-    # 查找菜單
     menu = Menu.query.get_or_404(menu_id)
-    
+
     if request.method == 'POST':
-        # 確保表單欄位存在且有效
-        menu.name = request.form['name']
-        menu.ingredients = request.form['ingredients']
-        menu.nutrition_calories = float(request.form['nutrition_calories'] or 0)  # 修正欄位名
-        menu.nutrition_protein = float(request.form['nutrition_protein'] or 0)
-        menu.nutrition_fat = float(request.form['nutrition_fat'] or 0)
-        menu.nutrition_carbs = float(request.form['nutrition_carbs'] or 0)
+        # 從表單中獲取數據，並處理空值
+        menu.name = request.form.get('name')
+        menu.ingredients = request.form.get('ingredients')
+        menu.nutrition_calories = float(request.form.get('nutrition_calories', 0))
+        menu.nutrition_protein = float(request.form.get('nutrition_protein', 0))
+        menu.nutrition_fat = float(request.form.get('nutrition_fat', 0))
+        menu.nutrition_carbs = float(request.form.get('nutrition_carbs', 0))
 
-        # 提交變更
+        # 提交到資料庫
         db.session.commit()
-
-        # 重定向到菜單頁面
         return redirect(url_for('view_or_edit_canteen', canteen_id=menu.canteen_id))
-    
-    # 若是GET請求，渲染編輯表單
+
+    # 如果是 GET 請求，渲染編輯頁面
     return render_template('edit_menu.html', menu=menu)
+
 
 
 

@@ -48,9 +48,9 @@
             <h5>營養資訊（可選）</h5>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="nutrition_total_calories">總熱量（大卡）</label>
-                    <input type="number" step="0.1" class="form-control" id="nutrition_total_calories" 
-                           name="nutrition_total_calories" value="{{ menu.nutrition_total_calories or '' }}">
+                    <label for="nutrition_calories">總熱量（大卡）</label>
+                    <input type="number" step="0.1" class="form-control" id="nutrition_calories" 
+                           name="nutrition_calories" value="{{ menu.nutrition_calories or '' }}">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="nutrition_protein">蛋白質（克）</label>
@@ -75,8 +75,9 @@
             <button type="submit" class="btn btn-primary btn-block">更新菜單品項</button>
         </form>
         
+        
         <!-- 返回菜單列表按鈕 -->
-        <a href="{{ url_for('view_canteen', canteen_id=menu.canteen_id) }}" class="btn btn-secondary btn-back btn-block">
+        <a href="{{ url_for('view_or_edit_canteen', canteen_id=menu.canteen_id) }}" class="btn btn-secondary btn-back btn-block">
             返回菜單列表
         </a>
     </div>
