@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}台科學餐商家列表{% endblock %}
+
+{% block body %}
+<main role="main">
+    <div class="jumbotron">
+        <div class="col-sm-8 mx-auto">
+            <h1>歡迎來到台科學餐食譜網站</h1>
+            <p>這是一個台科學餐資訊網站，你可以在這搜尋各學餐的菜單及營養資訊，進行飲食管理，達成您一日健康所需！</p>
+            <p>
+                <a class="btn btn-primary" href="{{ url_for('index') }}" role="button">立即查看學餐列表</a>
+            </p>
+        </div>
+    </div>
+</main>
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">台科學餐商家列表</h1>
+    <a href="{{ url_for('add_canteen') }}" class="btn btn-success mb-4">新增商家</a>
+
+    <!-- 顯示商家列表 -->
+<div class="list-group">
+    {% for canteen in canteens %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1">{{ canteen.name }}</h5>
+                <p class="mb-1">{{ canteen.description[:100] }}...</p>  <!-- 顯示商家介紹的前 100 字 -->
+            </div>
+            <div class="btn-group">
+                <!-- 瀏覽商家按鈕 -->
+                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-primary mr-2">查看商家</a>
+                <!-- 編輯商家按鈕 -->
+                <a href="{{ url_for('edit_canteen', canteen_id=canteen.id) }}" class="btn btn-warning mr-2">編輯商家</a>
+
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

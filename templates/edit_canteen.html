@@ -1,0 +1,33 @@
+<!-- templates/edit_canteen.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編輯商家 - {{ canteen.name }}</title>
+</head>
+<body>
+    <h1>編輯商家</h1>
+    <form action="{{ url_for('edit_canteen', canteen_id=canteen.id) }}" method="POST">
+        <label for="name">商家名稱:</label>
+        <input type="text" name="name" id="name" value="{{ canteen.name }}" required><br><br>
+
+        <label for="description">商家介紹:</label>
+        <textarea name="description" id="description" rows="4" required>{{ canteen.description }}</textarea><br><br>
+
+        <button type="submit">更新商家</button>
+    </form>
+
+    <br><br>
+
+    <!-- 刪除商家按鈕 -->
+    <form action="{{ url_for('delete_canteen', canteen_id=canteen.id) }}" method="POST" style="display:inline;">
+        <button type="submit" onclick="return confirm('您確定要刪除此商家嗎？');">刪除商家</button>
+    </form>
+
+    <!-- 返回商家列表按鈕 -->
+    <a href="{{ url_for('index') }}">
+        <button>返回商家列表</button>
+    </a>
+</body>
+</html>

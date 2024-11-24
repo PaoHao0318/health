@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ canteen.name }} 的菜單</title>
+</head>
+<body>
+    <h1>{{ canteen.name }} 的菜單</h1>
+    <ul>
+        {% for menu in menus %}
+        <li>
+            <h3>{{ menu.name }}</h3>
+            <p>內容物: {{ menu.ingredients }}</p>
+            <p>營養標示: {{ menu.nutrition }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">返回店家列表</a>
+</body>
+</html>

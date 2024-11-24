@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}新增商家{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">新增商家</h1>
+
+    <form method="POST" action="{{ url_for('add_canteen') }}">
+        <!-- 商家名稱欄位 -->
+        <div class="form-group">
+            <label for="name">商家名稱</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <!-- 商家介紹欄位 -->
+        <div class="form-group">
+            <label for="description">商家介紹</label>
+            <textarea class="form-control" id="description" name="description" rows="3" placeholder="簡短介紹商家的內容"></textarea>
+        </div>
+
+        <!-- 提交按鈕 -->
+        <button type="submit" class="btn btn-primary">新增商家</button>
+    </form>
+</div>
+{% endblock %}
