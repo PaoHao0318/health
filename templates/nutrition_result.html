@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}營養需求結果{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">您的每日營養需求</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">總熱量需求 (TDEE)</h5>
+            <p class="card-text"><strong>{{ tdee }}</strong> 大卡</p>
+            <hr>
+            <h5 class="card-title">營養分配</h5>
+            <ul>
+                <li>碳水化合物: <strong>{{ carbs }}</strong> 克</li>
+                <li>蛋白質: <strong>{{ protein }}</strong> 克</li>
+                <li>脂肪: <strong>{{ fat }}</strong> 克</li>
+            </ul>
+        </div>
+    </div>
+    <a href="{{ url_for('nutrition_calculator') }}" class="btn btn-secondary mt-4">重新計算</a>
+     <!-- 返回商家列表 -->
+    <a href="{{ url_for('index') }}" class="btn btn-primary">查看商家列表</a>
+    </div>
+</div>
+{% endblock %}

@@ -6,8 +6,12 @@
 <main role="main">
     <div class="jumbotron">
         <div class="col-sm-8 mx-auto">
+             <!-- 加入圖片 -->
+             <img src="https://tse2.mm.bing.net/th?id=OIP.e0OZUGnSWSP-oWrn5u7fEgHaBm&pid=Api&P=0&h=180" alt="台科學餐封面"  class="img-fluid rounded shadow-lg mb-4" style="max-width: 100%; height: auto;">
             <h1>歡迎來到台科學餐食譜網站</h1>
             <p>這是一個台科學餐資訊網站，你可以在這搜尋各學餐的菜單及營養資訊，進行飲食管理，達成您一日健康所需！</p>
+            
+                    
             <p>
                 <a class="btn btn-primary" href="{{ url_for('index') }}" role="button">立即查看學餐列表</a>
             </p>
@@ -29,7 +33,7 @@
             </div>
             <div class="btn-group">
                 <!-- 瀏覽商家按鈕 -->
-                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-primary mr-2">查看商家</a>
+                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-primary mr-2">查看菜單</a>
                 <!-- 編輯商家按鈕 -->
                 <a href="{{ url_for('edit_canteen', canteen_id=canteen.id) }}" class="btn btn-warning mr-2">編輯商家</a>
 

@@ -201,6 +201,42 @@ def delete_menu(menu_id):
     # 返回原商家的菜單頁面
     return redirect(url_for('view_or_edit_canteen', canteen_id=menu.canteen_id))
 
+@app.route('/nutrition_calculator', methods=['GET', 'POST'])
+def nutrition_calculator():
+    if request.method == 'POST':
+        # 接收表單數據
+        age = int(request.form['age'])
+        weight = float(request.form['weight'])  # 公斤
+        height = float(request.form['height'])  # 公分
+        gender = request.form['gender']
+        activity_level = request.form['activity_level']
+
+        # 計算基礎代謝率 (BMR)
+        if gender == 'male':
+            bmr = 10 * weight + 6.25 * height - 5 * age + 5
+        else:  # 女性
+            bmr = 10 * weight + 6.25 * height - 5 * age - 161
+
+        # 根據活動程度計算每日總熱量需求
+        activity_factors = {
+            'sedentary': 1.2,         # 久坐不動
+            'light': 1.375,          # 輕度活動
+            'moderate': 1.55,        # 中度活動
+            'active': 1.725,         # 高度活動
+            'very_active': 1.9       # 非常高度活動
+        }
+        tdee = bmr * activity_factors[activity_level]
+
+        # 營養需求建議 (假設比例：碳水 50%，蛋白質 20%，脂肪 30%)
+        carbs = tdee * 0.5 / 4  # 每克碳水提供 4 大卡
+        protein = tdee * 0.2 / 4  # 每克蛋白質提供 4 大卡
+        fat = tdee * 0.3 / 9  # 每克脂肪提供 9 大卡
+
+        # 回傳結果到頁面
+        return render_template('nutrition_result.html', tdee=round(tdee), carbs=round(carbs), protein=round(protein), fat=round(fat))
+
+    return render_template('nutrition_calculator.html')
+
 
 if __name__ == '__main__':
     create_tables()  # 手動創建資料表
