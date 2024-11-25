@@ -14,10 +14,95 @@
                     
             <p>
                 <a class="btn btn-primary" href="{{ url_for('index') }}" role="button">立即查看學餐列表</a>
+            
+                <a class="btn btn-info" href="{{ url_for('nutrition_calculator') }}" role="button">計算營養需求</a>
             </p>
         </div>
     </div>
 </main>
+<!-- 顯示每日營養需求 -->
+<div class="container mt-4">
+    <h1 class="text-center mb-4">您的每日營養需求</h1>
+    
+    {% if user_data %}
+    <div class="row">
+        <!-- 左邊顯示資料 -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">個人資訊</h5>
+                    <ul>
+                        <li>身高: <strong>{{ user_data.height }}</strong> 公分</li>
+                        <li>體重: <strong>{{ user_data.weight }}</strong> 公斤</li>
+                        <li>年齡: <strong>{{ user_data.age }}</strong> 歲</li>
+                    </ul>
+                    <h5 class="card-title">總熱量需求 (TDEE)</h5>
+                    <p class="card-text"><strong>{{ user_data.tdee }}</strong> 大卡</p>
+                    <hr>
+                    <h5 class="card-title">營養分配</h5>
+                    <ul>
+                        <li>碳水化合物: <strong>{{ user_data.carbs }}</strong> 克</li>
+                        <li>蛋白質: <strong>{{ user_data.protein }}</strong> 克</li>
+                        <li>脂肪: <strong>{{ user_data.fat }}</strong> 克</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右邊顯示圓環圖 -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">營養需求比例</h5>
+                    <canvas id="nutritionChart" width="120" height="120"></canvas> <!-- 圓環圖大小調整 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>目前沒有可顯示的營養資料，請先填寫資料計算您的需求。</p>
+    {% endif %}
+</div>
+
+
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% if user_data %}
+    var ctx = document.getElementById('nutritionChart').getContext('2d');
+    var nutritionChart = new Chart(ctx, {
+        type: 'doughnut', // 圓環圖
+        data: {
+            labels: ['碳水化合物', '蛋白質', '脂肪'],
+            datasets: [{
+                label: '營養需求比例',
+                data: [{{ user_data.carbs }}, {{ user_data.protein }}, {{ user_data.fat }}], // 使用動態數據
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(2) + ' 克';
+                        }
+                    }
+                }
+            }
+            
+        }
+    });
+    {% endif %}
+</script>
+{% endblock %}
+
 
 <div class="container mt-4">
     <h1 class="mb-4 text-center">台科學餐商家列表</h1>
@@ -33,9 +118,9 @@
             </div>
             <div class="btn-group">
                 <!-- 瀏覽商家按鈕 -->
-                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-primary mr-2">查看菜單</a>
+                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-warning mr-2">查看菜單</a>
                 <!-- 編輯商家按鈕 -->
-                <a href="{{ url_for('edit_canteen', canteen_id=canteen.id) }}" class="btn btn-warning mr-2">編輯商家</a>
+                <a href="{{ url_for('edit_canteen', canteen_id=canteen.id) }}" class="btn btn-light mr-2">編輯商家</a>
 
             </div>
         </div>

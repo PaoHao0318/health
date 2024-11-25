@@ -19,3 +19,18 @@ class Menu(db.Model):
     nutrition_fat = db.Column(db.Float, nullable=False)       # 脂肪 (g)
     nutrition_carbs = db.Column(db.Float, nullable=False)     # 醣類 (g)
     canteen_id = db.Column(db.Integer, db.ForeignKey('canteens.id'), nullable=False)
+
+class UserData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    age = db.Column(db.Integer, nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    height = db.Column(db.Float, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    activity_level = db.Column(db.String(20), nullable=False)
+    tdee = db.Column(db.Float, nullable=False)
+    carbs = db.Column(db.Float, nullable=False)
+    protein = db.Column(db.Float, nullable=False)
+    fat = db.Column(db.Float, nullable=False)
+
+    def __repr__(self):
+        return f"<UserData {self.id}>"

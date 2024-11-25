@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from flask import Flask, render_template, request, redirect, url_for
-from models import db, Canteen, Menu  # 確保 models 模組存在
+from models import db, Canteen, Menu, UserData  # 確保 models 模組存在
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -24,11 +24,14 @@ def create_tables():
 @app.route('/')
 def index():
     canteens = Canteen.query.all()  # 取得所有商家的資料
+    user_data =  UserData.query.order_by(UserData.id.desc()).first()  # 查詢最新的一筆資料
+    
+    
     # 確保 description 不為 None，若為 None 則給予空字串
     for canteen in canteens:
         if canteen.description is None:
             canteen.description = ""
-    return render_template('index.html', canteens=canteens)
+    return render_template('index.html', canteens=canteens, user_data=user_data)
 
 
 # 顯示單一店家及其菜單，並提供編輯菜單的功能
@@ -210,6 +213,8 @@ def nutrition_calculator():
         height = float(request.form['height'])  # 公分
         gender = request.form['gender']
         activity_level = request.form['activity_level']
+        
+        
 
         # 計算基礎代謝率 (BMR)
         if gender == 'male':
@@ -228,12 +233,19 @@ def nutrition_calculator():
         tdee = bmr * activity_factors[activity_level]
 
         # 營養需求建議 (假設比例：碳水 50%，蛋白質 20%，脂肪 30%)
-        carbs = tdee * 0.5 / 4  # 每克碳水提供 4 大卡
-        protein = tdee * 0.2 / 4  # 每克蛋白質提供 4 大卡
-        fat = tdee * 0.3 / 9  # 每克脂肪提供 9 大卡
+        carbs = round(tdee * 0.5 / 4, 2)  # 每克碳水提供 4 大卡, 保留兩位小數
+        protein = round(tdee * 0.2 / 4, 2)  # 每克蛋白質提供 4 大卡, 保留兩位小數
+        fat = round(tdee * 0.3 / 9, 2)  # 每克脂肪提供 9 大卡, 保留兩位小數
+        
+        # 儲存數據到資料庫
+        user_data  = UserData(age=age, weight=weight, height=height, gender=gender, 
+                             activity_level=activity_level, tdee=tdee, carbs=carbs, protein=protein, fat=fat)
+        db.session.add(user_data )
+        db.session.commit()
 
+    
         # 回傳結果到頁面
-        return render_template('nutrition_result.html', tdee=round(tdee), carbs=round(carbs), protein=round(protein), fat=round(fat))
+        return render_template('nutrition_result.html', user_data=user_data)
 
     return render_template('nutrition_calculator.html')
 
