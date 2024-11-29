@@ -17,7 +17,7 @@ app.config['SECRET_KEY'] = 'key'  # 用於安全性相關功能（例如 session
 db.init_app(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)
-
+#
 # 創建資料表，將創建資料表的邏輯放入 if __name__ 區塊
 def create_tables():
     with app.app_context():
