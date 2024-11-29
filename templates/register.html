@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card w-50">
+        <div class="card-body">
+            <h2 class="text-center mb-4">註冊</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">使用者名稱</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="輸入使用者名稱" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密碼</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="輸入密碼" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">註冊</button>
+            </form>
+            <p class="text-center mt-3">
+                已有帳號？<a href="{{ url_for('login') }}">登入</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -95,13 +95,14 @@
                 <input type="number" class="form-control" step="0.01" id="nutrition_carbs" name="nutrition_carbs" placeholder="請輸入醣類含量" required>
             </div>
             
-            <button type="submit" class="btn btn-custom-primary btn-block">新增菜單</button>
+                <!-- 按鈕區域 -->
+            <div class="d-flex justify-content-between mt-4">
+                <!-- 新增菜單按鈕 -->
+                <button type="submit" class="btn btn-custom-primary">新增菜單</button>
+                <!-- 返回商家頁面按鈕 -->
+                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-custom-secondary">返回商家頁面</a>
+            </div>
         </form>
-
-        <!-- 返回店家頁面按鈕 -->
-        <div class="text-center mt-4">
-            <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-secondary">返回店家頁面</a>
-        </div>
     </div>
 
     <!-- 引入 jQuery 和 Bootstrap JS -->

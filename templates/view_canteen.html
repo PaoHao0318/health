@@ -63,12 +63,13 @@
                             刪除
                         </button>
                     </form>
-                        <a href="{{ url_for('edit_menu', menu_id=menu.id) }}">編輯菜單</a>
-
+                    <a href="{{ url_for('edit_menu', menu_id=menu.id) }}" class="btn btn-sm btn-light">編輯菜單</a>
+                    
+                    <!-- 點餐表單 -->
+                    <form action="{{ url_for('place_order', menu_id=menu.id) }}" method="POST" class="d-inline">
+                        <input type="number" name="quantity" value="1" min="1" style="width: 50px; height: 30px; margin-left: 10px; margin-right: 5px;">
+                        <button type="submit" class="btn btn-sm btn-primary">點餐</button>
                     </form>
-                    
-                    
-           
                 </div>
             </div>
             {% endfor %}
@@ -91,7 +92,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            integrity="sha384-UO2eT0CpHqdSJQ6Hty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

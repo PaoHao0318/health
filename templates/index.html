@@ -25,33 +25,44 @@
     <h1 class="text-center mb-4">您的每日營養需求</h1>
     
     {% if user_data %}
-    <div class="row">
+    <div class="row align-items-stretch">
         <!-- 左邊顯示資料 -->
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">個人資訊</h5>
-                    <ul>
-                        <li>身高: <strong>{{ user_data.height }}</strong> 公分</li>
-                        <li>體重: <strong>{{ user_data.weight }}</strong> 公斤</li>
-                        <li>年齡: <strong>{{ user_data.age }}</strong> 歲</li>
-                    </ul>
-                    <h5 class="card-title">總熱量需求 (TDEE)</h5>
-                    <p class="card-text"><strong>{{ user_data.tdee }}</strong> 大卡</p>
-                    <hr>
-                    <h5 class="card-title">營養分配</h5>
-                    <ul>
-                        <li>碳水化合物: <strong>{{ user_data.carbs }}</strong> 克</li>
-                        <li>蛋白質: <strong>{{ user_data.protein }}</strong> 克</li>
-                        <li>脂肪: <strong>{{ user_data.fat }}</strong> 克</li>
-                    </ul>
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <!-- 個人資訊 -->
+                    <div class="flex-grow-1 border-bottom pb-3">
+                        <h5 class="card-title">個人資訊</h5>
+                        <ul>
+                            <li>身高: <strong>{{ user_data.height }}</strong> 公分</li>
+                            <li>體重: <strong>{{ user_data.weight }}</strong> 公斤</li>
+                            <li>年齡: <strong>{{ user_data.age }}</strong> 歲</li>
+                        </ul>
+                    </div>
+        
+                    <!-- 總熱量需求 -->
+                    <div class="flex-grow-1 border-bottom py-3">
+                        <h5 class="card-title">總熱量需求 (TDEE)</h5>
+                        <p class="card-text"><strong>{{ user_data.tdee }}</strong> 大卡</p>
+                    </div>
+        
+                    <!-- 營養分配 -->
+                    <div class="flex-grow-1 pt-3">
+                        <h5 class="card-title">營養分配</h5>
+                        <ul>
+                            <li>碳水化合物: <strong>{{ user_data.carbs }}</strong> 克</li>
+                            <li>蛋白質: <strong>{{ user_data.protein }}</strong> 克</li>
+                            <li>脂肪: <strong>{{ user_data.fat }}</strong> 克</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+        
 
         <!-- 右邊顯示圓環圖 -->
         <div class="col-md-6">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title text-center">營養需求比例</h5>
                     <canvas id="nutritionChart" width="120" height="120"></canvas> <!-- 圓環圖大小調整 -->
@@ -104,6 +115,7 @@
 {% endblock %}
 
 
+
 <div class="container mt-4">
     <h1 class="mb-4 text-center">台科學餐商家列表</h1>
     <a href="{{ url_for('add_canteen') }}" class="btn btn-success mb-4">新增商家</a>
@@ -111,20 +123,68 @@
     <!-- 顯示商家列表 -->
 <div class="list-group">
     {% for canteen in canteens %}
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="mb-1">{{ canteen.name }}</h5>
-                <p class="mb-1">{{ canteen.description[:100] }}...</p>  <!-- 顯示商家介紹的前 100 字 -->
-            </div>
-            <div class="btn-group">
-                <!-- 瀏覽商家按鈕 -->
-                <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-warning mr-2">查看菜單</a>
-                <!-- 編輯商家按鈕 -->
-                <a href="{{ url_for('edit_canteen', canteen_id=canteen.id) }}" class="btn btn-light mr-2">編輯商家</a>
-
-            </div>
+    <div class="list-group-item d-flex align-items-center justify-content-between">
+        <!-- 商家介紹區域 -->
+        <div class="flex-grow-1">
+            <h5 class="mb-1">{{ canteen.name }}</h5>
+            <p class="mb-1">{{ canteen.description[::] }}</p> <!-- 顯示商家介紹 -->
         </div>
+    
+        <!-- 按鈕區域 -->
+        <div class="d-flex flex-shrink-0">
+            <a href="{{ url_for('view_or_edit_canteen', canteen_id=canteen.id) }}" class="btn btn-warning mr-2">查看菜單</a>
+            <a href="{{ url_for('edit_canteen', canteen_id=canteen.id) }}" class="btn btn-light">編輯商家</a>
+        </div>
+    </div>
     {% endfor %}
+</div>
+
+<div class="container mt-4">
+    <!-- 已點餐紀錄區塊 -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">已點餐紀錄</h4>
+        </div>
+        <div class="card-body">
+            {% if orders %}
+            <ul class="list-group">
+                {% for order in orders %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>菜單名稱: <strong>{{ order.menu.name }}</strong> x {{ order.quantity }} 份 - 熱量: {{ order.calories }} 大卡</span>
+                    <form action="{{ url_for('delete_order', order_id=order.id) }}" method="POST" class="mb-0">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('您確定要刪除此點餐紀錄嗎？');">刪除</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="alert alert-warning text-center mb-0">
+                目前尚未點餐。
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 剩餘營養需求區塊 -->
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">剩餘營養需求</h4>
+        </div>
+        <div class="card-body">
+            {% if remaining_nutrition %}
+            <ul class="list-group">
+                <li class="list-group-item">總熱量: <strong>{{ remaining_nutrition.calories }}</strong> 大卡</li>
+                <li class="list-group-item">碳水化合物: <strong>{{ remaining_nutrition.carbs }}</strong> 克</li>
+                <li class="list-group-item">蛋白質: <strong>{{ remaining_nutrition.protein }}</strong> 克</li>
+                <li class="list-group-item">脂肪: <strong>{{ remaining_nutrition.fat }}</strong> 克</li>
+            </ul>
+            {% else %}
+            <div class="alert alert-info text-center mb-0">
+                尚未計算您的營養需求。
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}
